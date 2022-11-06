@@ -17,12 +17,8 @@ public class LoansController {
 
     @GetMapping("/myLoans")
     public List<Loans> getLoanDetails(@RequestParam int id) {
-        List<Loans> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(id);
-        if (loans != null ) {
-            return loans;
-        }else {
-            return null;
-        }
+        return loanRepository.findByCustomerIdOrderByStartDtDesc(id);
+
     }
 
 }

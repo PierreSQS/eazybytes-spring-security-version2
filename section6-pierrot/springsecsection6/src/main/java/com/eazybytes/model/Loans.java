@@ -1,6 +1,6 @@
 package com.eazybytes.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,7 +19,7 @@ public class Loans {
 	private int customerId;
 	
 	@Column(name="start_dt")
-	private Date startDt;
+	private LocalDateTime startDt;
 	
 	@Column(name = "loan_type")
 	private String loanType;
@@ -52,11 +52,11 @@ public class Loans {
 		this.customerId = customerId;
 	}
 
-	public Date getStartDt() {
+	public LocalDateTime getStartDt() {
 		return startDt;
 	}
 
-	public void setStartDt(Date startDt) {
+	public void setStartDt(LocalDateTime startDt) {
 		this.startDt = startDt;
 	}
 

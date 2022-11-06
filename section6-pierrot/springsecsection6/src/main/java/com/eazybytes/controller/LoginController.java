@@ -26,8 +26,8 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer) {
-        Customer savedCustomer = null;
-        ResponseEntity response = null;
+        Customer savedCustomer;
+        ResponseEntity<String> response = null;
         try {
             String hashPwd = passwordEncoder.encode(customer.getPwd());
             customer.setPwd(hashPwd);
@@ -36,7 +36,7 @@ public class LoginController {
             if (savedCustomer.getId() > 0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
-                        .body("Given user details are successfully registered");
+                        .body("Given user details are successfully registered !!");
             }
         } catch (Exception ex) {
             response = ResponseEntity

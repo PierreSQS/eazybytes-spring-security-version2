@@ -1,6 +1,6 @@
 package com.eazybytes.controller;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class ContactController {
     @PostMapping("/contact")
     public Contact saveContactInquiryDetails(@RequestBody Contact contact) {
         contact.setContactId(getServiceReqNumber());
-        contact.setCreateDt(new Date(System.currentTimeMillis()));
+        contact.setCreateDt(LocalDateTime.now());
         return contactRepository.save(contact);
     }
 

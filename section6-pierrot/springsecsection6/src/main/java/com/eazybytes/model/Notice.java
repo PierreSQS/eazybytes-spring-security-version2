@@ -1,6 +1,6 @@
 package com.eazybytes.model;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,16 +22,16 @@ public class Notice {
 	private String noticeDetails;
 
 	@Column(name = "notic_beg_dt")
-	private Date noticBegDt;
+	private LocalDateTime noticBegDt;
 	
 	@Column(name = "notic_end_dt")
-	private Date noticEndDt;
+	private LocalDateTime noticEndDt;
 	
 	@Column(name = "create_dt")
-	private Date createDt;
+	private LocalDateTime createDt;
 	
 	@Column(name = "update_dt")
-	private Date updateDt;
+	private LocalDateTime updateDt;
 
 	public int getNoticeId() {
 		return noticeId;
@@ -57,35 +57,35 @@ public class Notice {
 		this.noticeDetails = noticeDetails;
 	}
 
-	public Date getNoticBegDt() {
+	public LocalDateTime getNoticBegDt() {
 		return noticBegDt;
 	}
 
-	public void setNoticBegDt(Date noticBegDt) {
+	public void setNoticBegDt(LocalDateTime noticBegDt) {
 		this.noticBegDt = noticBegDt;
 	}
 
-	public Date getNoticEndDt() {
+	public LocalDateTime getNoticEndDt() {
 		return noticEndDt;
 	}
 
-	public void setNoticEndDt(Date noticEndDt) {
+	public void setNoticEndDt(LocalDateTime noticEndDt) {
 		this.noticEndDt = noticEndDt;
 	}
 
-	public Date getCreateDt() {
+	public LocalDateTime getCreateDt() {
 		return createDt;
 	}
 
-	public void setCreateDt(Date createDt) {
+	public void setCreateDt(LocalDateTime createDt) {
 		this.createDt = createDt;
 	}
 
-	public Date getUpdateDt() {
+	public LocalDateTime getUpdateDt() {
 		return updateDt;
 	}
 
-	public void setUpdateDt(Date updateDt) {
+	public void setUpdateDt(LocalDateTime updateDt) {
 		this.updateDt = updateDt;
 	}	
 }
