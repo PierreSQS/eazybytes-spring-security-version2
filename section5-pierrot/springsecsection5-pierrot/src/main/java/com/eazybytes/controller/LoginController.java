@@ -30,7 +30,7 @@ public class LoginController {
             if (savedCustomer.getId() > 0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
-                        .body("Given user details are successfully registered");
+                        .body("Given user details are successfully registered !!");
             }
         } catch (Exception ex) {
             response = ResponseEntity
