@@ -10,14 +10,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -74,6 +80,22 @@ class LoginControllerTest {
     }
 
     @Test
-    void getUserDetailsAfterLogin() {
+    void getUserDetailsAfterLogin1() throws Exception {
+        List<Customer> customerList = List.of(customer);
+        given(mockCustomerRepo.findByEmail(anyString())).willReturn(customerList);
+        mockMvc.perform(get("/user")
+                        .with(authentication(new UsernamePasswordAuthenticationToken("mockUser@example.com","54321",null))))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void getUserDetailsAfterLogin2() throws Exception {
+        List<Customer> customerList = List.of(customer);
+        given(mockCustomerRepo.findByEmail(anyString())).willReturn(customerList);
+        mockMvc.perform(get("/user")
+                        .with(user("MockUser").password("mockPWD")))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
