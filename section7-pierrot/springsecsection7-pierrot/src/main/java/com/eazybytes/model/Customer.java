@@ -1,8 +1,11 @@
 package com.eazybytes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
+
+import java.util.Set;
 
 @Entity
 public class Customer {
@@ -23,10 +26,12 @@ public class Customer {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
 
-    private String role;
-
     @Column(name = "create_dt")
     private String createDt;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    Set<Authority> authorities;
 
     public int getId() {
         return id;
@@ -68,14 +73,6 @@ public class Customer {
         this.pwd = pwd;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public String getCreateDt() {
         return createDt;
     }
@@ -83,4 +80,9 @@ public class Customer {
     public void setCreateDt(String createDt) {
         this.createDt = createDt;
     }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
 }

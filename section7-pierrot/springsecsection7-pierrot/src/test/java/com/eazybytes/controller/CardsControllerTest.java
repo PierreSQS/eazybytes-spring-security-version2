@@ -51,7 +51,7 @@ class CardsControllerTest {
     void getCardDetails() throws Exception {
         String customerId = "121212";
         given(mockCardsRepo.findByCustomerId(anyInt())).willReturn(mockCardsList);
-        mockMvc.perform(get("/myCards").param("customerId",customerId))
+        mockMvc.perform(get("/myCards").param("id",customerId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(2)))
                 .andExpect(jsonPath("$.length()").value(equalTo(2)))
