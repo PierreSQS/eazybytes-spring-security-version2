@@ -26,6 +26,8 @@ public class Customer {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
 
+    private String role;
+
     @Column(name = "create_dt")
     private String createDt;
 
@@ -83,6 +85,14 @@ public class Customer {
 
     public Set<Authority> getAuthorities() {
         return authorities;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
 }
