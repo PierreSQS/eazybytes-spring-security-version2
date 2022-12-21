@@ -34,7 +34,7 @@ public class EazyBankUsernamePwdAuthenticationProvider implements Authentication
         if (!customer.isEmpty()) {
             if (passwordEncoder.matches(pwd, customer.get(0).getPwd())) {
                 return new UsernamePasswordAuthenticationToken(username, pwd,
-                        getAuthorities(customer.get(0).getAuthorities()));
+                        getGrantedAuthorities(customer.get(0).getAuthorities()));
             } else {
                 throw new BadCredentialsException("Invalid password!");
             }
@@ -43,7 +43,7 @@ public class EazyBankUsernamePwdAuthenticationProvider implements Authentication
         }
     }
 
-    private Set<GrantedAuthority> getAuthorities(Set<Authority> authorities) {
+    private Set<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
         return authorities.stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toSet());

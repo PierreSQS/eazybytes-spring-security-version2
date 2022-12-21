@@ -1,11 +1,13 @@
 package com.eazybytes.config;
 
+import com.eazybytes.filters.RequestValidationBeforeAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -32,13 +34,14 @@ public class ProjectSecurityConfig {
                     .csrf().ignoringAntMatchers("/contact", "/register")
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
+                    .addFilterBefore(new RequestValidationBeforeAuthFilter(), BasicAuthenticationFilter.class)
                     .authorizeHttpRequests()
-                    .antMatchers("/myAccount").hasAnyAuthority("VIEWACCOUNT")
-                    .antMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
-                    .antMatchers("/myLoans").hasAuthority("VIEWLOANS")
-                    .antMatchers("/myCards").hasAuthority("VIEWCARDS")
-                    .mvcMatchers("/user").authenticated()
-                    .mvcMatchers("/notices", "/contact", "/register").permitAll()
+                        .antMatchers("/myAccount").hasAnyAuthority("VIEWACCOUNT")
+                        .antMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
+                        .antMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                        .antMatchers("/myCards").hasAuthority("VIEWCARDS")
+                        .mvcMatchers("/user").authenticated()
+                        .mvcMatchers("/notices", "/contact", "/register").permitAll()
                 .and()
                     .formLogin()
                 .and()
