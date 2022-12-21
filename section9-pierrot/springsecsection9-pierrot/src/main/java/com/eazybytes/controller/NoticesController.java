@@ -3,7 +3,6 @@ package com.eazybytes.controller;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,11 @@ import com.eazybytes.repository.NoticeRepository;
 @RestController
 public class NoticesController {
 
-    @Autowired
-    private NoticeRepository noticeRepository;
+    private final NoticeRepository noticeRepository;
+
+    public NoticesController(NoticeRepository noticeRepository) {
+        this.noticeRepository = noticeRepository;
+    }
 
     @GetMapping("/notices")
     public ResponseEntity<List<Notice>> getNotices() {

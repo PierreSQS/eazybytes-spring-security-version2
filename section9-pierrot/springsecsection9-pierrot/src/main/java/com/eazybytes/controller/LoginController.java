@@ -2,7 +2,6 @@ package com.eazybytes.controller;
 
 import com.eazybytes.model.Customer;
 import com.eazybytes.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,15 +17,18 @@ import java.util.List;
 @RestController
 public class LoginController {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    public LoginController(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+        this.customerRepository = customerRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer) {
-        Customer savedCustomer = null;
+        Customer savedCustomer;
         ResponseEntity<String> response = null;
         try {
             String hashPwd = passwordEncoder.encode(customer.getPwd());
@@ -36,7 +38,7 @@ public class LoginController {
             if (savedCustomer.getId() > 0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
-                        .body("Given user details are successfully registered");
+                        .body("Given user details are successfully registered !!");
             }
         } catch (Exception ex) {
             response = ResponseEntity
@@ -49,7 +51,7 @@ public class LoginController {
     @RequestMapping("/user")
     public Customer getUserDetailsAfterLogin(Authentication authentication) {
         List<Customer> customers = customerRepository.findByEmail(authentication.getName());
-        if (customers.size() > 0) {
+        if (!customers.isEmpty()) {
             return customers.get(0);
         } else {
             return null;

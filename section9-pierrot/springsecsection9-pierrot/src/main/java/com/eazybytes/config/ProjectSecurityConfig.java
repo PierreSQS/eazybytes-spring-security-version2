@@ -22,16 +22,21 @@ public class ProjectSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityContext().requireExplicitSave(false)
-            .and().cors().configurationSource(request -> {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-                config.setAllowedMethods(Collections.singletonList("*"));
-                config.setAllowCredentials(true);
-                config.setAllowedHeaders(Collections.singletonList("*"));
-                config.setMaxAge(3600L);
-                return config;
-            }).and().csrf().ignoringRequestMatchers("/contact","/register").csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and().addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+            .and()
+                .cors().configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                    config.setAllowedMethods(Collections.singletonList("*"));
+                    config.setAllowCredentials(true);
+                    config.setAllowedHeaders(Collections.singletonList("*"));
+                    config.setMaxAge(3600L);
+                    return config;
+                })
+            .and()
+                .csrf().ignoringRequestMatchers("/contact","/register")
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            .and()
+                .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(),BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests()
@@ -41,8 +46,10 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/myCards").hasRole("USER")
                         .requestMatchers("/user").authenticated()
                         .requestMatchers("/notices","/contact","/register").permitAll()
-                .and().formLogin()
-                .and().httpBasic();
+            .and()
+                .formLogin()
+            .and()
+                .httpBasic();
         return http.build();
     }
 

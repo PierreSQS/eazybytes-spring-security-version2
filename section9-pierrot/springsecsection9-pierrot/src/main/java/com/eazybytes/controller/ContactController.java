@@ -1,26 +1,27 @@
 package com.eazybytes.controller;
 
-import java.sql.Date;
-import java.util.Random;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.eazybytes.model.Contact;
+import com.eazybytes.repository.ContactRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eazybytes.model.Contact;
-import com.eazybytes.repository.ContactRepository;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @RestController
 public class ContactController {
 
-    @Autowired
-    private ContactRepository contactRepository;
+    private final ContactRepository contactRepository;
+
+    public ContactController(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
+    }
 
     @PostMapping("/contact")
     public Contact saveContactInquiryDetails(@RequestBody Contact contact) {
         contact.setContactId(getServiceReqNumber());
-        contact.setCreateDt(new Date(System.currentTimeMillis()));
+        contact.setCreateDt(LocalDateTime.now());
         return contactRepository.save(contact);
     }
 

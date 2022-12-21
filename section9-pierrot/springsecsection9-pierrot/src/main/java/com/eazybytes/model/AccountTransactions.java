@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="account_transactions")
@@ -22,7 +22,7 @@ public class AccountTransactions {
 	private int customerId;
 	
 	@Column(name="transaction_dt")
-	private Date transactionDt;
+	private LocalDateTime transactionDt;
 	
 	@Column(name = "transaction_summary")
 	private String transactionSummary;
@@ -63,11 +63,11 @@ public class AccountTransactions {
 		this.customerId = customerId;
 	}
 
-	public Date getTransactionDt() {
+	public LocalDateTime getTransactionDt() {
 		return transactionDt;
 	}
 
-	public void setTransactionDt(Date transactionDt) {
+	public void setTransactionDt(LocalDateTime transactionDt) {
 		this.transactionDt = transactionDt;
 	}
 
