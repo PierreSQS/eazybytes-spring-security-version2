@@ -17,7 +17,7 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.securityContext().requireExplicitSave(false)
+        http.securityContext().requireExplicitSave(true)
                 .and()
                     .cors().configurationSource(httpRequest -> {
                         CorsConfiguration config = new CorsConfiguration();
