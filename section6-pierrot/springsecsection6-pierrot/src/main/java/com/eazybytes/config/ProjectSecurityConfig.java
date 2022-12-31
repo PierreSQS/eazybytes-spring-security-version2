@@ -34,8 +34,10 @@ public class ProjectSecurityConfig {
                     })
                 .and()
                     .csrf().ignoringRequestMatchers("/contact", "/register")
+                    // Allow client to read the generated CSRF-Cookie (client can also be a Java-Script client)
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
+                    // the filter allows the sharing of the CRSF-Cookie with the UI
                     .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                     .authorizeHttpRequests()
                     .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
