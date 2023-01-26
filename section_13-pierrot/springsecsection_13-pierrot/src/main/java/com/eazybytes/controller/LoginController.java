@@ -26,13 +26,13 @@ public class LoginController {
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer) {
-        Customer savedCustomer = null;
-        ResponseEntity response = null;
+
+        ResponseEntity<String> response = null;
         try {
             String hashPwd = passwordEncoder.encode(customer.getPwd());
             customer.setPwd(hashPwd);
             customer.setCreateDt(String.valueOf(new Date(System.currentTimeMillis())));
-            savedCustomer = customerRepository.save(customer);
+            Customer savedCustomer = customerRepository.save(customer);
             if (savedCustomer.getId() > 0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
