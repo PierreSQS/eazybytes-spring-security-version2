@@ -5,7 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "contact_messages")
@@ -26,7 +27,7 @@ public class Contact {
 	private String message;
 
 	@Column(name = "create_dt")
-	private Date createDt;
+	private LocalDateTime createDt;
 
 	public String getContactId() {
 		return contactId;
@@ -68,11 +69,11 @@ public class Contact {
 		this.message = message;
 	}
 
-	public Date getCreateDt() {
+	public LocalDateTime getCreateDt() {
 		return createDt;
 	}
 
-	public void setCreateDt(Date createDt) {
+	public void setCreateDt(LocalDateTime createDt) {
 		this.createDt = createDt;
 	}
 	
