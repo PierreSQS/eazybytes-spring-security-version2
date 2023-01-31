@@ -8,12 +8,12 @@ import jakarta.persistence.Id;
 @Entity
 public class Accounts {
 
-	@Column(name = "customer_id")
-	private int customerId;
-
 	@Id
 	@Column(name="account_number")
 	private long accountNumber;
+
+	@Column(name = "customer_id")
+	private int customerId;
 
 	@Column(name="account_type")
 	private String accountType;
