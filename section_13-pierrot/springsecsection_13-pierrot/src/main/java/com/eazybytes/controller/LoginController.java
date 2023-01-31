@@ -36,12 +36,12 @@ public class LoginController {
             if (savedCustomer.getId() > 0) {
                 response = ResponseEntity
                         .status(HttpStatus.CREATED)
-                        .body("Given user details are successfully registered");
+                        .body("Given user details are successfully registered !!");
             }
         } catch (Exception ex) {
             response = ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An exception occured due to " + ex.getMessage());
+                    .body("An exception occurred due to " + ex.getMessage());
         }
         return response;
     }
@@ -49,7 +49,7 @@ public class LoginController {
     @RequestMapping("/user")
     public Customer getUserDetailsAfterLogin(Authentication authentication) {
         List<Customer> customers = customerRepository.findByEmail(authentication.getName());
-        if (customers.size() > 0) {
+        if (!customers.isEmpty()) {
             return customers.get(0);
         } else {
             return null;
