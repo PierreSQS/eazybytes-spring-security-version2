@@ -21,7 +21,7 @@ public class ContactController {
 
     @PostMapping("/contact")
     // @PreFilter("filterObject.contactName != 'Test'")
-    @PostFilter("filterObject.contactName != 'Test'")
+    @PostFilter("filterObject.contactName != 'Test'") // filterObject is in fact apply on the return Object not on the argument !!!
     public List<Contact> saveContactInquiryDetails(@RequestBody List<Contact> contacts) {
         Contact contact = contacts.get(0);
         contact.setContactId(getServiceReqNumber());

@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -56,7 +57,7 @@ class ContactControllerTest {
     @Test
     @WithMockUser(username = "MockUser",password = "MockPWD")
     void saveContactInquiryDetails() throws Exception {
-        given(mockContactRepo.save(contactToSave)).willReturn(savedContact);
+        given(mockContactRepo.save(any(Contact.class))).willReturn(savedContact);
         List<Contact> contactListToSave = List.of(contactToSave);
         mockMvc.perform(post("/contact")
                         .contentType(MediaType.APPLICATION_JSON)
