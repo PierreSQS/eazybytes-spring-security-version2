@@ -2,7 +2,6 @@ package com.eazybytes.controller;
 
 import com.eazybytes.model.Customer;
 import com.eazybytes.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,11 +17,14 @@ import java.util.List;
 @RestController
 public class LoginController {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
+
+    public LoginController(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+        this.customerRepository = customerRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Customer customer) {

@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,14 +45,14 @@ class ContactControllerTest {
     Contact contactToSave, savedContact;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws NoSuchAlgorithmException {
         contactToSave = new Contact();
         contactToSave.setContactName("Pierrot User");
 
         savedContact = new Contact();
         savedContact.setContactName(contactToSave.getContactName());
         savedContact.setCreateDt(LocalDateTime.now());
-        savedContact.setContactId("1");
+        savedContact.setContactId(ContactController.getServiceReqNumber());
     }
 
     @Test
