@@ -1,11 +1,13 @@
 package com.eazybytes.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -19,6 +21,9 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeyCloackRoleConverter());
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .cors().configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
@@ -40,14 +45,16 @@ public class ProjectSecurityConfig {
                         .requestMatchers("/myCards").hasRole("USER")
                         .requestMatchers("/user").authenticated()
                         .requestMatchers("/notices","/contact","/register").permitAll()
-                .and().formLogin()
-                .and().httpBasic();
+            .and()
+                .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter);
+
         return http.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public JwtDecoder jwtDecoder(@Value("${issuerUri}") String issuerUri) {
+        return JwtDecoders.fromIssuerLocation(issuerUri);
     }
+
 
 }
