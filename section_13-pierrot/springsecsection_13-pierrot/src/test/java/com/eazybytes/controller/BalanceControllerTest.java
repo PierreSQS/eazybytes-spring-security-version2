@@ -1,7 +1,9 @@
 package com.eazybytes.controller;
 
 import com.eazybytes.model.AccountTransactions;
+import com.eazybytes.model.Customer;
 import com.eazybytes.repository.AccountTransactionsRepository;
+import com.eazybytes.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,12 +29,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BalanceControllerTest {
 
     AccountTransactions mockTransactions;
+    Customer mockCustomer;
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
     AccountTransactionsRepository mockTransRepo;
+
+    @MockBean
+    CustomerRepository mockCustRepo;
 
     @BeforeEach
     void setUp() {
@@ -43,16 +50,21 @@ class BalanceControllerTest {
         mockTransactions.setCreateDt(LocalDateTime.now().toString());
         mockTransactions.setTransactionDt(LocalDateTime.now());
         mockTransactions.setTransactionType("Debit");
-    }
+
+        mockCustomer = new Customer();
+        mockCustomer.setEmail("testuser1@example.com");
+        mockCustomer.setId(1);    }
 
 
     @WithMockUser(username = "MockUser",password = "MockPwd")
     @Test
     void getBalanceDetails() throws Exception {
         // Given
+        given(mockCustRepo.findByEmail(anyString())).willReturn(List.of(mockCustomer));
         given(mockTransRepo.findByCustomerIdOrderByTransactionDtDesc(anyInt())).willReturn(List.of(mockTransactions));
+        String customerID = String.valueOf(mockCustomer.getId());
 
-        mockMvc.perform(get("/myBalance").param("id","1"))
+        mockMvc.perform(get("/myBalance").param("email",customerID))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$",hasSize(1)))
                 .andExpect(jsonPath("$").value(hasSize(1))) // equivalent to above assertion
