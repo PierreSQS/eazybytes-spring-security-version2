@@ -15,7 +15,7 @@ import java.util.Objects;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 // TODO CHECK how to test in the context of JWT-Token!!!
-@Disabled("Test doesn't work since we have the submit a JWT-Token-TOCHECK how to test!")
+@Disabled("Test doesn't work since we have to submit a JWT-Token-TOCHECK how to test!")
 @SpringBootTest
 class AccountControllerIT {
 
